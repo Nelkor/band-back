@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+    - ./static:/app/static
+    - ./nginx:/etc/nginx/conf.d
+    ports:
+    - 8841:80
+  db:
+    image: mariadb
+    environment:
+      MYSQL_DATABASE: player
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+    - ./db:/docker-entrypoint-initdb.d
+  pma:
+    image: phpmyadmin
+    ports:
+    - 8842:80
+  node:
+    build: api
+    volumes:
+    - ./log:/log
